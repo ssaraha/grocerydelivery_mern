@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {NavLink} from "react-router-dom"
 
@@ -9,15 +9,29 @@ import {useAppContext} from "../context/AppContext"
 const Navbar = () => {
     const [open, setOpen] = useState(false)
 
-    const {user, showUserLogin, setUser, setShowUserLogin, navigate} = useAppContext();
+    const {
+        user, 
+        showUserLogin, 
+        setUser, 
+        setShowUserLogin,
+        navigate,
+        searchQuery,
+        setSearchQuery 
+} = useAppContext();
 
-    const logout = async () => {
-        setUser(null);
-        navigate('/');
+useEffect(() => {
+    if (searchQuery.length > 0) {
+        navigate('/products');
     }
+}, [searchQuery]);
+
+const logout = async () => {
+    setUser(null);
+    navigate('/');
+}
 
     return (
-        <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
+        <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white transition-all sticky top-0 z-50 ">
 
             <NavLink to="/" onClick={() => setOpen(false)}>
                 <img className='h-9' src={assets.logo} alt='dummyLogo' />
@@ -31,7 +45,9 @@ const Navbar = () => {
                
 
                 <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
-                    <input className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
+                    <input
+                    onChange={(e) => setSearchQuery(e.target.value)} 
+                    className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
                     <img className='w-4 h-4' src={assets.search_icon} alt='Search' />
                 </div>
 
