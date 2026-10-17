@@ -3,6 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { assets } from "../assets/assets";
+import ProductCard from "../components/ProductCard";
 
 const ProductDetails = () => {
 
@@ -19,10 +20,10 @@ const ProductDetails = () => {
     const product = products.find(item => item._id === id);
     useEffect(() => {
         if (products.length > 0) {
-            let productCopy = product?.slice;
-            productCopy = productCopy?.filter((item) => product?.category === item?.category);
+            let productsCopy = products?.slice();
+            productsCopy = productsCopy?.filter((item) => product?.category === item?.category);
 
-            setRelatedProducts(productCopy?.slice(0, 5));
+            setRelatedProducts(productsCopy?.slice(0, 5));
         }
     }, [products]);
 
@@ -96,11 +97,20 @@ const ProductDetails = () => {
                     </div>
                 </div>
             </div>
-            {/* RELATED PRODUCT 3h11 */}
-            <div className="flex flex-col items-center w-max">
-                <p>Related Products</p>
-                <div className="w-20 h-0.5 bg-green-700 rounded-full mt-2"></div>
-            </div>
+                <div className="flex flex-col items-center mt-12">
+                    <div className="flex flex-col items-center w-max">
+                        <p className="text-3xl font-medium">Related Products</p>
+                        <div className="w-20 h-0.5 bg-indigo-500 rounded-full mt-2"></div>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md-gap-6 lg;grid-cols-5 mt-6 w-full">
+                        {relatedProducts?.filter(p => p.inStock).map((product, index) => {
+                            return <ProductCard key={index} product={product} />
+                        })}
+                    </div>
+                     <button 
+                        onClick={() =>{navigate('/products'); scrollTo(0,0);} }
+                        className="mx-auto cursor-pointer px-12 my-16 py-2.5 border rounded text-indigo-500 hover:bg-indigo-400 transition">See more ...</button>
+                </div>
         </div>
     );
 };

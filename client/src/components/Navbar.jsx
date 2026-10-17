@@ -16,7 +16,8 @@ const Navbar = () => {
         setShowUserLogin,
         navigate,
         searchQuery,
-        setSearchQuery 
+        setSearchQuery, 
+        getCartCount
 } = useAppContext();
 
 useEffect(() => {
@@ -55,7 +56,7 @@ const logout = async () => {
                     onClick={() => navigate('/cart')}
                     className="relative cursor-pointer">
                    <img className='w-4 h-4 opacity-80' src={assets.nav_cart_icon} alt='Search' />
-                    <button className="absolute -top-2 -right-3 text-xs text-white bg-green-600 w-4.5 h-[18px] rounded-full">3</button>
+                    <button className="absolute -top-2 -right-3 text-xs text-white bg-green-600 w-4.5 h-[18px] rounded-full">{getCartCount()}</button>
                 </div>
                 {!user ? <button 
                     onClick={() => setShowUserLogin(true)}
@@ -78,10 +79,27 @@ const logout = async () => {
                 
             </div>
 
+            <div>
+                
+            </div>
+
             <button onClick={() => open ? setOpen(false) : setOpen(true)} aria-label="Menu" className="sm:hidden">
                 {/* Menu Icon SVG */}
                <img src={assets.menu_icon} alt='menu' className='' />
             </button>
+
+            <div className='flex items-center gap-6 sm:hidden'>
+                <div 
+                    onClick={() => navigate('/cart')}
+                    className="relative cursor-pointer">
+                    <img className='w-4 h-4 opacity-80' src={assets.nav_cart_icon} alt='Search' />
+                    <button className="absolute -top-2 -right-3 text-xs text-white bg-green-600 w-4.5 h-[18px] rounded-full">{getCartCount()}</button>
+                </div>
+                <button onClick={() => open ? setOpen(false) : setOpen(true)} aria-label='menu'>
+                    <img src={assets.menu_icon} alt='menu' />
+                </button>
+            </div>
+            
 
             {/* Mobile Menu */}
             {open && <div className={`${open ? 'flex' : 'hidden'} absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden`}>
