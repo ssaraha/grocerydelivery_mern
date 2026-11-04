@@ -19,6 +19,7 @@ const authUser = async (req, res, next) => {
                 message: "Not Authirozed"
             })
         }
+        console.log("USER >>> ", req.userId)
         next();
     } catch (error) {
         return res.status(400).json({

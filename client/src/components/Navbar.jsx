@@ -5,6 +5,7 @@ import {NavLink} from "react-router-dom"
 import {assets} from "../assets/assets"
 
 import {useAppContext} from "../context/AppContext"
+import toast from 'react-hot-toast'
 
 const Navbar = () => {
     const [open, setOpen] = useState(false)
@@ -17,7 +18,8 @@ const Navbar = () => {
         navigate,
         searchQuery,
         setSearchQuery, 
-        getCartCount
+        getCartCount,
+        axios
 } = useAppContext();
 
 useEffect(() => {
@@ -27,8 +29,18 @@ useEffect(() => {
 }, [searchQuery]);
 
 const logout = async () => {
-    setUser(null);
-    navigate('/');
+    try {
+        const {data} = await axios.get('/api/user/logout');
+        if(data.success){
+            toast.success(data.message);
+            setUser(null);
+            navigate('/');
+        }else {
+            toast.error(data.message);
+        }
+    } catch (error) {
+        toast.error(error.message);
+    }
 }
 
     return (
@@ -44,7 +56,6 @@ const logout = async () => {
                 <NavLink to="/products">All Product</NavLink>
                 <NavLink to="/contact">Contact</NavLink>
                
-
                 <div className="hidden lg:flex items-center  text-sm gap-2 border border-gray-300 px-3 rounded-full">
                     <input
                     onChange={(e) => setSearchQuery(e.target.value)} 

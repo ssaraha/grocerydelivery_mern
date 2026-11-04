@@ -119,6 +119,24 @@ export const AppContextProvider = ({children}) => {
         return Math.floor(totalAmount * 100) / 100;
     }
 
+    //Update database cart Items
+    useEffect(() => {
+        const updateCart = async () => {
+            try {
+                const {data}  = await axios.post(`/api/cart/update`, {cartItems})
+                console.log("DATASS >>> ", data)
+                if (!data.success) {
+                    toast.error(data.message)
+                }
+            } catch (error) {
+                console.log("ERROR >>> ", error.message)
+            }
+        }
+        if (user) {
+            updateCart()
+        }
+    }, [cartItems])
+
     const value = {
         currency,
         navigate,
