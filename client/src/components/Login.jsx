@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 
 const Login = () => {
@@ -11,11 +12,10 @@ const Login = () => {
 
     const {setShowUserLogin, setUser, axios, navigate} = useAppContext();
 
-    const onSumitHandler = async(e, email, password) => {
-        
-        try {
-            e.preventDefault();
 
+    const onSumitHandler = async(e, name, email, password) => {
+         e.preventDefault();
+        try {
             const {data} = await axios.post(`/api/user/${state}`, {name, email, password})
             if (data.success) {
                 navigate('/');
@@ -31,10 +31,10 @@ const Login = () => {
 
     return (
         <div
-            onClick={() => setShowUserLogin(false)} 
+            onClick={() => setShowUserLogin(false)}
             className="fixed top-0 left-0 right-0 z-80 flex items-center text-sm text-gray-600 bg-black/40 h-screen">
-            <form 
-            onSubmit={onSumitHandler}
+            <form
+            onSubmit={() => onSumitHandler(event, name, email, password)}
             onClick={(e) => e.stopPropagation()}
                 className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white">
                 <p className="text-2xl font-medium m-auto">
@@ -43,7 +43,11 @@ const Login = () => {
                 {state === "register" && (
                     <div className="w-full">
                         <p>Name</p>
-                        <input onChange={(e) => setName(e.target.value)} value={name} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="text" required />
+                        <input 
+                        name="name"
+                        onChange={(e) => setName(e.target.value)} 
+                        value={name} 
+                        placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="text" required />
                     </div>
                 )}
                 <div className="w-full ">
@@ -52,7 +56,9 @@ const Login = () => {
                 </div>
                 <div className="w-full ">
                     <p>Password</p>
-                    <input onChange={(e) => setPassword(e.target.value)} value={password} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="password" required />
+                    <input
+                        name="password"
+                     onChange={(e) => setPassword(e.target.value)} value={password} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="password" required />
                 </div>
                 {state === "register" ? (
                     <p>

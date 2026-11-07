@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken"
 
 const authUser = async (req, res, next) => {
+    
     try {
         const {token} = req.cookies;
         if(!token){
@@ -19,7 +20,6 @@ const authUser = async (req, res, next) => {
                 message: "Not Authirozed"
             })
         }
-        console.log("USER >>> ", req.userId)
         next();
     } catch (error) {
         return res.status(400).json({

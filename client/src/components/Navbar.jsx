@@ -39,6 +39,7 @@ const logout = async () => {
             toast.error(data.message);
         }
     } catch (error) {
+        console.log(error.message)
         toast.error(error.message);
     }
 }
@@ -133,7 +134,7 @@ const logout = async () => {
                     className="cursor-pointer px-6 py-2 mt-2 bg-green-600 hover:bg-green-800 transition text-white rounded-full text-sm">
                     Login
                 </button> : <button 
-                    onClick={logout}
+                    onClick={() => logout()}
                     className="cursor-pointer px-6 py-2 mt-2 bg-slate-800 hover:bg-slate-950 transition text-white rounded-full text-sm">
                     Logout
                 </button>

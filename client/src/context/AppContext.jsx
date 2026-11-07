@@ -15,7 +15,7 @@ export const AppContextProvider = ({children}) => {
     const currency = import.meta.env.VITE_CURRENCY;
 
     const navigate = useNavigate();
-    const  [user, setUser] = useState(true);
+    const  [user, setUser] = useState(false);
     const  [isSeller, setIsSeller] = useState(false);
     const  [showUserLogin, setShowUserLogin] = useState(false);
     const  [products, setProducts] = useState([]);
@@ -26,6 +26,7 @@ export const AppContextProvider = ({children}) => {
     //FETCH SELLER STATUS
     const fetchSeller = async () => {
         try {
+            
             const {data} = await axios.get('/api/seller/is-auth');
             if (data.success) {
                 setIsSeller(true)
@@ -124,7 +125,6 @@ export const AppContextProvider = ({children}) => {
         const updateCart = async () => {
             try {
                 const {data}  = await axios.post(`/api/cart/update`, {cartItems})
-                console.log("DATASS >>> ", data)
                 if (!data.success) {
                     toast.error(data.message)
                 }

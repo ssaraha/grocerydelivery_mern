@@ -12,7 +12,7 @@ const generateToken = (req, res, userId) => {
         samesite: process.env.NODE_ENV === 'production' ? 'none' : 'strict', //CSRF PROTECTION
         maxAge: 7 * 24 * 60 * 60 * 1000, //COOKIE EXPIRATION TIME
     });
-    req.body.userId = token.id;
+    req.userId = token.id;
 
     return token;
 }
@@ -64,7 +64,7 @@ export const register = async (req, res) => {
 export const login = async(req, res) => {
     try {
         const {email, password} = req.body;
-
+        
         if (!email || !password) {
             return res.json({
                 success:false,
@@ -73,17 +73,17 @@ export const login = async(req, res) => {
         }
 
         const user = await User.findOne({email});
-        if (!userRouter) {
+        if (!user) {
             return res.json({
                 success:false,
-                message: 'Invali email or password'
+                message: 'Invalid email or password'
             })
         }
         const isMatch  = await bcrypt.compare(password, user.password);
         if (!isMatch) {
              return res.json({
                 success:false,
-                message: 'Invali email or password'
+                message: 'Invalid email or password'
             })
         }
 
@@ -128,6 +128,7 @@ export const isAuth = async(req, res) => {
 }
 //LOGOUT USER /api/user/logout
 export const logout = async (req, res) => {
+    console.log("LOGOUT >>> ")
     try {
         res.clearCookie('token', {
             httpOnly: true,
@@ -140,7 +141,8 @@ export const logout = async (req, res) => {
             message: "User logged out successfully"
         })
     } catch (error) {
-        return res.status(200).json({
+        console.log("ERRORO >>> ", error.message)
+        return res.status(500).json({
             success: false, 
             message: error.message
         })
